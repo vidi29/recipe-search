@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Recipe Search</title>
+</head>
+<body>
+<h1>Search Resep</h1>
+<input id="q" placeholder="Cari (nama / bahan)"/>
+<button onclick="doSearch()">Cari</button>
+<div id="results"></div>
+
+<script>
+const API = "http://localhost:8080";
+async function doSearch(){
+  const q = document.getElementById('q').value;
+  const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}&topk=20`);
+  const data = await res.json();
+  const container = document.getElementById('results');
+  container.innerHTML = "";
+  data.forEach(r => {
+    const el = document.createElement('div');
+    el.innerHTML = `<h3>${r.title} (score ${r.score.toFixed(3)})</h3>
+    <img src="${API}/${r.image}" width="150" onerror="this.style.display='none'"/>
+    <a href="#" onclick="view(${r.id})">Lihat</a>`;
+    container.appendChild(el);
+  })
+}
+
+async function view(id){
+  const res = await fetch(`${API}/recipe/${id}`);
+  const r = await res.json();
+  alert("Title: "+r.title + "\\nIngredients:\\n" + r.ingredients.join("\\n"));
+}
+</script>
+</body>
+</html>

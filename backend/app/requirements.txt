@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+psycopg2-binary
+sqlalchemy
+pandas
+scikit-learn
+python-dotenv
+requests
+python-multipart
+aiofiles
+python-jose[cryptography]  # optional auth
